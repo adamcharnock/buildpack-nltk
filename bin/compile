@@ -17,15 +17,12 @@ set -eo pipefail
 
 [ "$BUILDPACK_XTRACE" ] && set -o xtrace
 
-# Prepend proper path for virtualenv hackery. This will be deprecated soon.
-export PATH=:/usr/local/bin:$PATH
-
 # Paths.
-ROOT_DIR=$(dirname $BIN_DIR)
 BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
-NLTK_DIR=$HOME/nltk_data
+NLTK_DIR=$BUILD_DIR/nltk_data
 
+echo "-----> Downloading NLTK data"
 python -m nltk.downloader -d $CACHE_DIR/nltk_data punkt
 cp -R $CACHE_DIR/nltk_data $NLTK_DIR
