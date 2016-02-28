@@ -1,24 +1,9 @@
 #!/usr/bin/env bash
 
-# This script serves as the
-# [**Python Buildpack**](https://github.com/heroku/heroku-buildpack-python)
-# detector.
-#
-# A [buildpack](http://devcenter.heroku.com/articles/buildpacks) is an
-# adapter between a Python application and Heroku's runtime.
-
-# ## Usage
-# Compiling an app into a slug is simple:
-#
-#     $ bin/detect <build-dir> <cache-dir>
-
 BUILD_DIR=$1
-REQUIREMENTS_TXT=$BUILD_DIR/requirements.txt
 
-# Exit early if app is clearly not Python.
-if [ ! -f $REQUIREMENTS_TXT ] && [ ! grep -iq nltk $REQUIREMENTS_TXT ]; then
-  exit 1
+if [ -f $BUILD_DIR/nltk ]; then
+  echo "nltk" && exit 0
+else
+  echo "no" && exit 1
 fi
-
-echo NLTK
-exit 0

@@ -18,11 +18,15 @@ set -eo pipefail
 [ "$BUILDPACK_XTRACE" ] && set -o xtrace
 
 # Paths.
+BIN_DIR=$(cd $(dirname $0); pwd)
 BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 NLTK_DIR=$BUILD_DIR/nltk_data
 
+export PATH=$BUILD_DIR/.heroku/python/bin:$PATH
+export PYTHONHOME=$BUILD_DIR/.heroku/python
+
 echo "-----> Downloading NLTK data"
-python -m nltk.downloader -d $CACHE_DIR/nltk_data punkt
+cat $BUILD_DIR/nltk | xargs python -m nltk.downloader -d $CACHE_DIR/nltk_data
 cp -R $CACHE_DIR/nltk_data $NLTK_DIR
